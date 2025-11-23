@@ -3,39 +3,43 @@
 {% block title %}{{ note and 'Редактировать заметку' or 'Создать заметку' }}{% endblock %}
 
 {% block content %}
-<h2>{% if note %}Редактировать заметку{% else %}Новая заметка{% endif %}</h2>
-<form method="post" enctype="multipart/form-data">
-    <div class="mb-3">
-        <label for="title" class="form-label">Название</label>
-        <input type="text" id="title" name="title" class="form-control" value="{{ note.title if note else '' }}" required>
-    </div>
-    <div class="mb-3">
-        <label for="folder_id" class="form-label">Папка</label>
-        <select id="folder_id" name="folder_id" class="form-select">
-            <option value="none">-- Без папки --</option>
-            {% for folder in folders %}
-            <option value="{{ folder.id }}">{{ folder.name }}</option>
-            {% endfor %}
-        </select>
-    </div>
-    <div class="mb-3">
-        <label class="form-label">Содержимое</label>
-        <!-- Quill editor container -->
-        <div id="editor" style="height: 250px; border: 1px solid #ced4da;"></div>
-        <!-- Hidden input to store HTML -->
-        <input type="hidden" name="content_html" />
-    </div>
-    <div class="mb-3">
-        <label for="note_password" class="form-label">Пароль для заметки (опционально)</label>
-        <input type="password" id="note_password" name="note_password" class="form-control">
-    </div>
-    <div class="mb-3">
-        <label for="files" class="form-label">Файлы/Аудио (можно выбрать несколько)</label>
-        <!-- allow multiple file selection; Django docs show using the multiple attribute and request.FILES.getlist to iterate over files【612466868143705†L230-L240】【612466868143705†L343-L348】 -->
-        <input type="file" id="files" name="files" class="form-control" multiple>
-    </div>
-    <button type="submit" class="btn btn-success">Сохранить</button>
-</form>
+<div class="minimal-card">
+    <h2 class="mb-4">{% if note %}Редактировать заметку{% else %}Новая заметка{% endif %}</h2>
+    <form method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="title" class="form-label">Название</label>
+            <input type="text" id="title" name="title" class="form-control" value="{{ note.title if note else '' }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="folder_id" class="form-label">Папка</label>
+            <select id="folder_id" name="folder_id" class="form-select">
+                <option value="none">-- Без папки --</option>
+                {% for folder in folders %}
+                <option value="{{ folder.id }}">{{ folder.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Содержимое</label>
+            <!-- Quill editor container -->
+            <div id="editor" style="height: 300px; border: 1px solid #ced4da; border-radius: 6px;"></div>
+            <!-- Hidden input to store HTML -->
+            <input type="hidden" name="content_html" />
+        </div>
+        <div class="mb-3">
+            <label for="note_password" class="form-label">Пароль для заметки (опционально)</label>
+            <input type="password" id="note_password" name="note_password" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="files" class="form-label">Файлы/Аудио (можно выбрать несколько)</label>
+            <!-- allow multiple file selection; Django docs show using the multiple attribute and request.FILES.getlist to iterate over files【612466868143705†L230-L240】【612466868143705†L343-L348】 -->
+            <input type="file" id="files" name="files" class="form-control" multiple>
+        </div>
+        <div class="d-grid">
+            <button type="submit" class="btn btn-success">Сохранить</button>
+        </div>
+    </form>
+</div>
 {% endblock %}
 
 {% block scripts %}

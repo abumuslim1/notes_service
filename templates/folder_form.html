@@ -3,12 +3,16 @@
 {% block title %}Создать папку{% endblock %}
 
 {% block content %}
-<h2>Новая папка</h2>
-<form method="post">
-    <div class="mb-3">
-        <label for="name" class="form-label">Название</label>
-        <input type="text" id="name" name="name" class="form-control" required>
-    </div>
-    <button type="submit" class="btn btn-primary">Создать</button>
-</form>
+<div class="minimal-card" style="max-width: 420px; margin: 0 auto;">
+    <h2 class="mb-3">Новая папка</h2>
+    <form method="post">
+        <div class="mb-3">
+            <label for="name" class="form-label">Название</label>
+            <input type="text" id="name" name="name" class="form-control" required>
+        </div>
+        <div class="d-grid">
+            <button type="submit" class="btn btn-primary">Создать</button>
+        </div>
+    </form>
+</div>
 {% endblock %}
