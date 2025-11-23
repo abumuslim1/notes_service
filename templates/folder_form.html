@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Создать папку{% endblock %}
+
+{% block content %}
+<h2>Новая папка</h2>
+<form method="post">
+    <div class="mb-3">
+        <label for="name" class="form-label">Название</label>
+        <input type="text" id="name" name="name" class="form-control" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Создать</button>
+</form>
+{% endblock %}

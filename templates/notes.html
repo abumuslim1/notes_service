@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Мои заметки{% endblock %}
+
+{% block content %}
+<h2>Мои заметки</h2>
+
+{% if folders %}
+<h4>Папки</h4>
+<ul class="list-group mb-3">
+    {% for folder in folders %}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        {{ folder.name }}
+        <form method="post" action="/folders/delete/{{ folder.id }}" style="margin:0;">
+            <button type="submit" class="btn btn-sm btn-outline-danger">Удалить</button>
+        </form>
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+{% if notes %}
+<h4>Заметки</h4>
+<div class="list-group">
+    {% for note in notes %}
+    <div class="list-group-item">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <a href="/notes/{{ note.id }}" class="h5 text-decoration-none">{{ note.title }}</a>
+                {% if note.folder_id %}
+                <small class="text-muted">(папка №{{ note.folder_id }})</small>
+                {% endif %}
+                <br>
+                <small class="text-muted">{{ note.created_at }}</small>
+            </div>
+            <form method="post" action="/notes/delete/{{ note.id }}" style="margin:0;">
+                <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Удалить заметку?');">Удалить</button>
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p>У вас пока нет заметок.</p>
+{% endif %}
+
+{% endblock %}

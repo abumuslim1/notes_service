@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ note and 'Редактировать заметку' or 'Создать заметку' }}{% endblock %}
+
+{% block content %}
+<h2>{% if note %}Редактировать заметку{% else %}Новая заметка{% endif %}</h2>
+<form method="post" enctype="multipart/form-data">
+    <div class="mb-3">
+        <label for="title" class="form-label">Название</label>
+        <input type="text" id="title" name="title" class="form-control" value="{{ note.title if note else '' }}" required>
+    </div>
+    <div class="mb-3">
+        <label for="folder_id" class="form-label">Папка</label>
+        <select id="folder_id" name="folder_id" class="form-select">
+            <option value="none">-- Без папки --</option>
+            {% for folder in folders %}
+            <option value="{{ folder.id }}">{{ folder.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Содержимое</label>
+        <!-- Quill editor container -->
+        <div id="editor" style="height: 250px; border: 1px solid #ced4da;"></div>
+        <!-- Hidden input to store HTML -->
+        <input type="hidden" name="content_html" />
+    </div>
+    <div class="mb-3">
+        <label for="note_password" class="form-label">Пароль для заметки (опционально)</label>
+        <input type="password" id="note_password" name="note_password" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label for="files" class="form-label">Файлы/Аудио (можно выбрать несколько)</label>
+        <!-- allow multiple file selection; Django docs show using the multiple attribute and request.FILES.getlist to iterate over files【612466868143705†L230-L240】【612466868143705†L343-L348】 -->
+        <input type="file" id="files" name="files" class="form-control" multiple>
+    </div>
+    <button type="submit" class="btn btn-success">Сохранить</button>
+</form>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Initialize the Quill rich text editor.  According to the Quill quickstart
+    // documentation, you need to include the CSS and JS and call new Quill() with
+    // a selector and theme【446203474423742†L49-L83】.
+    var quill = new Quill('#editor', {
+        theme: 'snow'
+    });
+    // Populate the editor with existing content if editing
+    {% if note and note.content %}
+    quill.root.innerHTML = {{ note.content|tojson|safe }};
+    {% endif %}
+    // Copy the HTML contents into the hidden input on form submission
+    var form = document.querySelector('form');
+    form.addEventListener('submit', function() {
+        var html = quill.root.innerHTML;
+        form.querySelector('input[name="content_html"]').value = html;
+    });
+</script>
+{% endblock %}
